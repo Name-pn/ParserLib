@@ -3,3 +3,4 @@ src/myparser.*
 src/parser.*
 .venv
 .idea
+__pycache__/
