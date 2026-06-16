@@ -7,7 +7,7 @@ from parser_lib.LALR.LALRTable import LALRTable
 from parser_lib.TreeMixins.MixinRegexAST import MixinRegexAST
 from parser_lib.const import table_dir, gen_filepath
 import hashlib
-import dill
+import pickle
 from pathlib import Path
 
 class LALRAnalyzerAST(MixinRegexAST, Analyzer):
@@ -20,7 +20,7 @@ class LALRAnalyzerAST(MixinRegexAST, Analyzer):
         table = LALRTable(self.gr, False)
         Path(table_dir).mkdir(parents=True, exist_ok=True)
         with open(gen_filepath(hash), 'wb') as file:
-            dill.dump(table, file)
+            pickle.dump(table, file)
         return table
 
     def _create_table(self):
@@ -28,7 +28,7 @@ class LALRAnalyzerAST(MixinRegexAST, Analyzer):
         table_name = gen_filepath(now_hash)
         if os.path.exists(table_name):
             with open(table_name, 'rb') as file:
-                table = dill.load(file)
+                table = pickle.load(file)
         else:
             table = self.gen_and_save_table(now_hash)
         return table
