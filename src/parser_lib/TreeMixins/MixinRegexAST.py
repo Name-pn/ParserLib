@@ -1,9 +1,11 @@
 from parser_lib.Symbol.Epsilon import Epsilon
+from parser_lib.Symbol.LTerminal import LTerminal
 from parser_lib.Symbol.Symbol import Symbol
 from parser_lib.Symbol.Terminal import Terminal
 from parser_lib.Tree.RegexAstNodes.Concat import ConcatNode
 from parser_lib.Tree.RegexAstNodes.Klini import KliniNode
 from parser_lib.Tree.RegexAstNodes.Leaf import LeafNode
+from parser_lib.Tree.RegexAstNodes.Name import NameNode
 from parser_lib.Tree.RegexAstNodes.Or import OrNode
 
 
@@ -44,12 +46,20 @@ class MixinRegexAST():
         self.parse_stack.append(new_node)
 
     def _on_reduce6(self):
+        pass
+    def _on_reduce7(self):
         length = 3
         r = self.parse_stack[-2]
         del self.parse_stack[-length:]
         self.parse_stack.append(r)
 
-    def _on_reduce7(self):
+    def _on_reduce8(self):
+        length = 3
+        r = self.parse_stack[-2]
+        del self.parse_stack[-length:]
+        self.parse_stack.append(r)
+
+    def _on_reduce9(self):
         pass
 
     def _on_reduce(self, state, symbol, action):
@@ -64,6 +74,12 @@ class MixinRegexAST():
     def _on_shift(self, state, symbol):
         if not isinstance(symbol, Terminal):
             raise Exception("Передан не терминальный символ")
-        self.parse_stack.append(LeafNode(symbol))
+        if isinstance(symbol, LTerminal):
+            if len(symbol.lexem) > 1:
+                self.parse_stack.append(NameNode(symbol))
+            else:
+                self.parse_stack.append(LeafNode(symbol))
+        else:
+            self.parse_stack.append(LeafNode(symbol))
 
 

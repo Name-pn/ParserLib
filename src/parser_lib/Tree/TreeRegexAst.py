@@ -5,6 +5,7 @@ class TypeAst(Enum):
     CONCAT = auto()
     KLINI = auto()
     BRACKETS = auto()
+    NAME = auto()
     LEAF = auto()
 
 class TreeRegexAstNode():
