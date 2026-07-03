@@ -4,3 +4,4 @@ src/parser.*
 .venv
 .idea
 __pycache__/
+build/
